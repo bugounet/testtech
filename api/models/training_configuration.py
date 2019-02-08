@@ -1,11 +1,17 @@
 import os
+from uuid import uuid4
+
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
 
 
 def get_algorithm_path(instance, filename):
+    last_id = (
+        instance.id or
+        TrainingConfiguration.objects.count()+1
+    )
     return os.path.join(
-        "docker-images", "algorithm_{}".format(instance.id), filename
+        "docker-images", "algorithm_{}".format(last_id), filename
     )
 
 
