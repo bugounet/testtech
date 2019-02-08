@@ -1,4 +1,7 @@
 from .training_configuration import (
     TrainingConfigurationDetailView,
-    TrainingConfigurationListView
+    TrainingConfigurationListView,
+)
+from .training_task import (
+    TrainingTaskListView
 )
