@@ -1,5 +1,7 @@
 import datetime
 from decimal import Decimal
+from unittest.mock import patch
+
 from django.test import TestCase
 
 # Create your tests here.
@@ -119,3 +121,44 @@ class APITestCase(TestCase):
             "test_loss": "0.542310",
             "test_accuracy": "0.746200",
         })
+
+    @patch('api.actions.TrainingConfigurationActionManager.run_training')
+    def test_post_configuration_run(self, action_manager):
+        training_configuration = self.get_training_configuration()
+        task = self.get_memory_training_task()
+        action_manager.return_value = task
+
+        response = self.client.post('/api/training/{}/run/'.format(
+            training_configuration.id
+        ))
+
+        self.assertEqual(response.status_code, 201)
+        self.assertEqual(response.json(), {
+            "id": 2,
+            "training_configuration": 1,
+            "failure_response": None,
+            "created_on":
+                alter_tz_format(
+                    datetime.datetime(2019, 1, 1, 0, 0, 0, tzinfo=utc)
+                ),
+            "started_on": None,
+            "terminated_on": None,
+            "test_loss": None,
+            "test_accuracy": None,
+            "status": TrainingTask.CREATED,
+        })
+
+    def get_memory_training_task(self):
+        """ Return a non-saved model to avoid interactions with DB (faster
+        test performances)
+        """
+        return TrainingTask(
+            training_configuration_id=1,
+            status=TrainingTask.CREATED,
+            failure_message=None,
+            started_on=None,
+            terminated_on=None,
+            test_loss=None,
+            test_accuracy=None,
+            id=2,
+        )
