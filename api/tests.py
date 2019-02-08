@@ -4,8 +4,8 @@ from django.test import SimpleTestCase
 class APITestCase(SimpleTestCase):
     def test_list_trainings(self):
         response = self.client.get("/api/trainings")
-
-        self.assertJSONEqual(response, [{
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.json(), [{
             "algorithm": 'algo1.py',
             "id": "1",
             "dockerfile": 'Dockerfile.dms',
