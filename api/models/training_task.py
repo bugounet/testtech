@@ -1,6 +1,5 @@
 from decimal import Decimal
 
-from django.core.exceptions import ValidationError
 from django.core.validators import MinValueValidator, MaxValueValidator
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
@@ -44,6 +43,7 @@ class TrainingTask(models.Model):
     )
     test_loss = models.DecimalField(
         help_text=_("Algorithm loss in percents."),
+        null=True, blank=True,
         max_digits=9,
         decimal_places=6,
         validators=[
@@ -53,6 +53,7 @@ class TrainingTask(models.Model):
     )
     test_accuracy = models.DecimalField(
         help_text=_("Algorithm loss in percents."),
+        null=True, blank=True,
         max_digits=9,
         decimal_places=6,
         validators=[
