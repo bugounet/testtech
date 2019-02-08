@@ -21,3 +21,22 @@ class APITestCase(TestCase):
                     '00:00', '0000'
                 ),
         }])
+
+    def test_get_single_training(self):
+        training_configuration = TrainingConfiguration.objects.create(
+            algorithm='algo1.py',
+            dockerfile='Dockerfile.dms',
+        )
+        response = self.client.get(
+            "/api/training/{}".format(training_configuration.id)
+        )
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.json(), {
+            "algorithm": 'algo1.py',
+            "id": training_configuration.id,
+            "dockerfile": 'Dockerfile.dms',
+            "created_on":
+                training_configuration.created_on.isoformat().replace(
+                    '00:00', '0000'
+                ),
+        })
