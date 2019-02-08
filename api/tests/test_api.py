@@ -128,7 +128,7 @@ class APITestCase(TestCase):
         task = self.get_memory_training_task()
         action_manager.return_value = task
 
-        response = self.client.post('/api/training/{}/run/'.format(
+        response = self.client.post('/api/training/{}/run'.format(
             training_configuration.id
         ))
 
@@ -136,11 +136,8 @@ class APITestCase(TestCase):
         self.assertEqual(response.json(), {
             "id": 2,
             "training_configuration": 1,
-            "failure_response": None,
-            "created_on":
-                alter_tz_format(
-                    datetime.datetime(2019, 1, 1, 0, 0, 0, tzinfo=utc)
-                ),
+            "failure_message": None,
+            "created_on": alter_tz_format(task.created_on.isoformat()),
             "started_on": None,
             "terminated_on": None,
             "test_loss": None,
