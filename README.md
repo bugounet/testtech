@@ -89,3 +89,7 @@ source env/bin/activate
 python manage.py runserver
 ```
 
+Se connecter à django-admin:
+
+La base de données SQLite fournie par défaut contient un user qui s'appelle
+"admin". Son mot de passe est "owkin".
