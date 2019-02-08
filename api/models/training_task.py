@@ -1,5 +1,6 @@
 from decimal import Decimal
 
+from django.core.exceptions import ValidationError
 from django.core.validators import MinValueValidator, MaxValueValidator
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
@@ -62,25 +63,47 @@ class TrainingTask(models.Model):
         ]
     )
 
-    # def clean_terminated_on(self):
-    #     if self.terminated_on is None:
-    #         return
-    #
-    #     if self.terminated_on < self.created_on:
-    #         raise ValidationError({
-    #             'terminated_on': _(
-    #                 "End date cannot be before build creation date."
-    #             )
-    #         })
-    #
-    #     if self.started_on is None:
-    #         raise ValidationError({
-    #             'terminated_on':_(
-    #                 'Cannot set end-date without a start date.')
-    #         })
-    #
-    #     if self.terminated_on < self.started_on:
-    #         raise ValidationError({
-    #             'terminated_on': _(
-    #                 'End date cannot be before script start date.')
-    #         })
+    def clean_fields(self, exclude=None):
+        if exclude is None:
+            exclude = []
+
+        if 'terminated_on' not in exclude:
+            self.clean_terminated_on()
+
+        if 'started_on' not in exclude:
+            self.clean_started_on()
+
+    def clean_terminated_on(self):
+        if self.terminated_on is None:
+            return
+
+        if self.terminated_on < self.created_on:
+            raise ValidationError({
+                'terminated_on': _(
+                    "End date cannot be before build creation date."
+                )
+            })
+
+        if self.started_on is None:
+            raise ValidationError({
+                'terminated_on':_(
+                    'Cannot set end-date without a start date.')
+            })
+
+        if self.terminated_on < self.started_on:
+            raise ValidationError({
+                'terminated_on': _(
+                    'End date cannot be before script start date.')
+            })
+
+    def clean_started_on(self):
+        if self.started_on is None:
+            return
+
+        if self.started_on < self.created_on:
+            raise ValidationError({
+                'started_on': _(
+                    'Start date cannot be before script execution scheduling '
+                    'date.'
+                )
+            })

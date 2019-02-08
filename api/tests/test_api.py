@@ -157,5 +157,6 @@ class APITestCase(TestCase):
             terminated_on=None,
             test_loss=None,
             test_accuracy=None,
+            created_on=datetime.datetime(2019, 1, 1, 0, 0, 0, 1, tzinfo=utc),
             id=2,
         )
