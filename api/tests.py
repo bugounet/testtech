@@ -1,3 +1,4 @@
+from decimal import Decimal
 from django.test import TestCase
 
 # Create your tests here.
@@ -44,3 +45,29 @@ class APITestCase(TestCase):
             algorithm='algo1.py',
             dockerfile='Dockerfile.dms',
         )
+
+    def test_get_tasks_list(self):
+        training_configuration = self.get_training_configuration()
+
+        task = TrainingTask.objects.create(
+            training_configuration=training_configuration,
+            status="training",
+            failure_message="This is a test.",
+            test_loss=Decimal("0.54231"),
+            test_accuracy=Decimal("0.7462"),
+        )
+
+        response = self.client.get('/api/tasks')
+
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(task.json(), [{
+            "training_configuration": training_configuration.pk,
+            "status": "training",
+            "created_on": task.created_on.isoformat().replace(
+                    '00:00', '0000'
+                ),
+            "id": task.id,
+            "failure_message": "This is a test.",
+            "test_loss": "0.54231",
+            "test_accuracy": "0.7462",
+        }])
