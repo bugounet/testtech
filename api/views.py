@@ -1,18 +1,19 @@
-import json
-
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from rest_framework import status
+
+from api.models import TrainingConfiguration
 
 
-# Create your views here.
 class TrainingConfigurationListView(APIView):
     def get(self, request, *args, **kwargs):
+
+
         return Response([
             {
-                'algorithm': 'algo1.py',
-                'dockerfile': 'Dockerfile.dms',
-                'id': '1',
-                'created_on': '2019-01-01T00:00:00'
+                'algorithm': training_configuration.algorithm.name,
+                'dockerfile': training_configuration.dockerfile.name,
+                'id': training_configuration.id,
+                'created_on': training_configuration.created_on.isoformat()
             }
+            for training_configuration in TrainingConfiguration.objects.all()
         ])
