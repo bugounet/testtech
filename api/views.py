@@ -6,8 +6,6 @@ from api.models import TrainingConfiguration
 
 class TrainingConfigurationListView(APIView):
     def get(self, request, *args, **kwargs):
-
-
         return Response([
             {
                 'algorithm': training_configuration.algorithm.name,
