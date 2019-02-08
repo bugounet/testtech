@@ -72,3 +72,20 @@ résultats et les potentielles erreurs
     "test_loss": <DecimalField>
     "test_accuracy": <DecimalField>
 }
+
+## Setup
+
+Créer un virtual env, installer les requirements, et lancer les tests:
+
+```
+virtualenv -p python3 env
+source env/bin/activate
+python manage.py test
+```
+
+Lancer le serveur:
+```
+source env/bin/activate
+python manage.py runserver
+```
+
