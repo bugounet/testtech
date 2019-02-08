@@ -3,5 +3,6 @@ from .training_configuration import (
     TrainingConfigurationListView,
 )
 from .training_task import (
-    TrainingTaskListView
+    TrainingTaskListView,
+    TrainingTaskDetailView,
 )

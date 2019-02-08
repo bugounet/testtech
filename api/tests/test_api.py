@@ -116,6 +116,6 @@ class APITestCase(TestCase):
             "terminated_on": alter_tz_format(task.terminated_on.isoformat()),
             "id": task.id,
             "failure_message": "This is a test.",
-            "test_loss": "0.542310", # Feature 6 decimals
-            "test_accuracy": "0.746200", # Feature 6 decimals
+            "test_loss": "0.542310",
+            "test_accuracy": "0.746200",
         })
