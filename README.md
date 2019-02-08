@@ -68,6 +68,8 @@ GET /api/task/:id/ --> Retourne le TrainingTask demandé avec le statut, les
 résultats et les potentielles erreurs
 {
     "status": ["created", "building", "training", "complete", "failure"],
+    "id": <int>,
+    "created_on": "iso-datetime"
     "failure_message": "Error message encountered for error summary",
     "test_loss": <DecimalField>
     "test_accuracy": <DecimalField>
