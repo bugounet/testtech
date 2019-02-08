@@ -16,5 +16,8 @@ class APITestCase(TestCase):
             "algorithm": 'algo1.py',
             "id": training_configuration.id,
             "dockerfile": 'Dockerfile.dms',
-            "created_on": training_configuration.created_on.isoformat(),
+            "created_on":
+                training_configuration.created_on.isoformat().replace(
+                    '00:00', '0000'
+                ),
         }])

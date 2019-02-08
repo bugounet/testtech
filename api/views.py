@@ -1,17 +1,13 @@
-from rest_framework.views import APIView
-from rest_framework.response import Response
+from rest_framework.generics import GenericAPIView
+from rest_framework.mixins import ListModelMixin
 
 from api.models import TrainingConfiguration
+from api.serializers import TrainingConfigurationSerializer
 
 
-class TrainingConfigurationListView(APIView):
+class TrainingConfigurationListView(ListModelMixin, GenericAPIView):
+    queryset = TrainingConfiguration.objects.all()
+    serializer_class = TrainingConfigurationSerializer
+
     def get(self, request, *args, **kwargs):
-        return Response([
-            {
-                'algorithm': training_configuration.algorithm.name,
-                'dockerfile': training_configuration.dockerfile.name,
-                'id': training_configuration.id,
-                'created_on': training_configuration.created_on.isoformat()
-            }
-            for training_configuration in TrainingConfiguration.objects.all()
-        ])
+        return self.list(request, *args, **kwargs)
