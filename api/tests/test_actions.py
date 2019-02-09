@@ -40,7 +40,8 @@ class ActionManagersTestCase(TestCase):
         self.assertEqual(task.test_accuracy, None)
         self.assertAlmostEqual(
             to_timestamp(task.created_on),
-            to_timestamp(datetime.datetime.now())
+            to_timestamp(datetime.datetime.now()),
+            places=8
         )
 
     def get_training_configuration(self):
