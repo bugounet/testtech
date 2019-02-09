@@ -30,12 +30,13 @@ class TrainingTaskSerializer(serializers.ModelSerializer):
             'terminated_on',
             'failure_message',
             'test_loss',
-            'test_accuracy'
+            'test_accuracy',
+            'docker_id',
         )
 
+    docker_id = serializers.CharField(allow_null=True)
     failure_message = serializers.CharField(allow_blank=True)
     id = serializers.IntegerField(read_only=True)
     training_configuration = serializers.PrimaryKeyRelatedField(read_only=True)
-
     started_on = serializers.DateTimeField(allow_null=True)
     terminated_on = serializers.DateTimeField(allow_null=True)

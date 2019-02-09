@@ -56,21 +56,7 @@ class APITestCase(TestCase):
 
     def test_get_tasks_list(self):
         training_configuration = self.get_training_configuration()
-
-        task = TrainingTask.objects.create(
-            training_configuration=training_configuration,
-            status=TrainingTask.COMPLETE,
-            failure_message="This is a test.",
-            started_on=datetime.datetime(
-                2019, 1, 16, 19, 15, 4, 1, tzinfo=utc
-            ),
-            terminated_on=datetime.datetime(
-                2019, 1, 16, 19, 17, 23, 2, tzinfo=utc
-            ),
-            test_loss=Decimal("0.54231"),
-            test_accuracy=Decimal("0.7462"),
-        )
-
+        task = self.get_training_task(training_configuration)
         response = self.client.get('/api/tasks')
 
         self.assertEqual(response.status_code, 200)
@@ -83,6 +69,7 @@ class APITestCase(TestCase):
             "started_on": alter_tz_format(task.started_on.isoformat()),
             "terminated_on": alter_tz_format(task.terminated_on.isoformat()),
             "id": task.id,
+            "docker_id": "abc",
             "failure_message": "This is a test.",
             "test_loss": "0.542310", # Feature 6 decimals
             "test_accuracy": "0.746200", # Feature 6 decimals
@@ -90,20 +77,7 @@ class APITestCase(TestCase):
 
     def test_get_task(self):
         training_configuration = self.get_training_configuration()
-
-        task = TrainingTask.objects.create(
-            training_configuration=training_configuration,
-            status=TrainingTask.COMPLETE,
-            failure_message="This is a test.",
-            started_on=datetime.datetime(
-                2019, 1, 16, 19, 15, 4, 1, tzinfo=utc
-            ),
-            terminated_on=datetime.datetime(
-                2019, 1, 16, 19, 17, 23, 2, tzinfo=utc
-            ),
-            test_loss=Decimal("0.54231"),
-            test_accuracy=Decimal("0.7462"),
-        )
+        task = self.get_training_task(training_configuration)
 
         response = self.client.get('/api/task/{}'.format(task.id))
 
@@ -117,6 +91,7 @@ class APITestCase(TestCase):
             "started_on": alter_tz_format(task.started_on.isoformat()),
             "terminated_on": alter_tz_format(task.terminated_on.isoformat()),
             "id": task.id,
+            "docker_id": "abc",
             "failure_message": "This is a test.",
             "test_loss": "0.542310",
             "test_accuracy": "0.746200",
@@ -142,6 +117,7 @@ class APITestCase(TestCase):
             "terminated_on": None,
             "test_loss": None,
             "test_accuracy": None,
+            "docker_id": None,
             "status": TrainingTask.CREATED,
         })
 
@@ -159,4 +135,20 @@ class APITestCase(TestCase):
             test_accuracy=None,
             created_on=datetime.datetime(2019, 1, 1, 0, 0, 0, 1, tzinfo=utc),
             id=2,
+        )
+
+    def get_training_task(self, training_configuration):
+        return TrainingTask.objects.create(
+            training_configuration=training_configuration,
+            status=TrainingTask.COMPLETE,
+            failure_message="This is a test.",
+            started_on=datetime.datetime(
+                2019, 1, 16, 19, 15, 4, 1, tzinfo=utc
+            ),
+            terminated_on=datetime.datetime(
+                2019, 1, 16, 19, 17, 23, 2, tzinfo=utc
+            ),
+            docker_id="abc",
+            test_loss=Decimal("0.54231"),
+            test_accuracy=Decimal("0.7462"),
         )

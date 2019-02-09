@@ -62,6 +62,7 @@ class TrainingTask(models.Model):
             MaxValueValidator(Decimal("100")),
         ]
     )
+    docker_id = models.CharField(max_length=255, blank=True, null=True)
 
     def clean_fields(self, exclude=None):
         if exclude is None:
