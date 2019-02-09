@@ -4,7 +4,6 @@ from unittest.mock import patch
 
 from django.test import TestCase
 
-# Create your tests here.
 from pytz import utc
 
 from api.models import TrainingConfiguration
