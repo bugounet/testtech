@@ -23,6 +23,7 @@ tard si le temps me le permet:
  - authentification (pour un premier pas, je laisse l'API sans auth)
  - soumission d'un algo python (je stocke le fichier python dans les MEDIA et
   les uploaderai avec django-admin)
+ - Gestion du cycle de vie de la task (abort, retry, etc...)
  - soumission d'un docker file (pareil que pour l'algo)
 
 # Lancé d'images
