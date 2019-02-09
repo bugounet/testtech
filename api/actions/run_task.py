@@ -15,16 +15,23 @@ class RunTaskAction(SubActionManager):
         self.model.status = TrainingTask.TRAINING
         self.model.save(update_fields=['status'])
 
-        container = docker_client.containers.run(
-            docker_image,
-            "-V /training_output/",
-            volumes={
-                self.actions.get_working_dir(): {
-                    'bind': '/training_output', 'mode': 'rw'
-                }
-            },
-            detach=True,
-            name=self.actions.get_container_name()
-        )
+        try:
+            container = docker_client.containers.run(
+                docker_image,
+                "-V /training_output/",
+                volumes={
+                    self.actions.get_working_dir(): {
+                        'bind': '/training_output', 'mode': 'rw'
+                    }
+                },
+                detach=True,
+                name=self.actions.get_container_name()
+            )
+        except Exception as e:
+            self.actions.mark_failed(
+                "Failed to run docker container : {}".format(str(e))
+            )
+            return None
 
         self.actions.mark_training(container.id)
+        return container
