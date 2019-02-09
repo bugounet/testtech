@@ -1,4 +1,7 @@
 django
 django-rest-framework
 django-object-actions
-
+# Background task management to keep fast API calls.
+celery
+# Broker to communicate bewteen django & celery
+redis
