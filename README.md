@@ -28,13 +28,17 @@ tard si le temps me le permet:
 
 # Lancé d'images
 
+- Créer un volume pour stocker les données de sortie
+```bash
+docker volume create training_output
+```
 - Construire l'image à partir du docker-file
 ```bash
 docker build -t image_<running_task_hash_or_id> -f Dockerfile.dms .
 ```
 - Exécuter le programme
 ```bash
-docker run -d -ti --name=container_<running_task_hash_or_id_as_container_name> image_<running_task_hash_or_id> "-V <output_volume> -T"
+docker run -d -ti --name=container_<running_task_hash_or_id_as_container_name> image_<running_task_hash_or_id> "-V training_output"
 ```
 
 __Note:__
@@ -86,9 +90,20 @@ source env/bin/activate
 python manage.py test
 ```
 
+Installer redis pour permettre à celery de fonctionner
+```
+brew install redis
+```
+
+Créer le volume de sortie des donnés de docker
+```docker volume create training_output
+```
 Lancer le serveur:
 ```
 source env/bin/activate
+# Start celery worker in background
+celery -A test_owkin -l info &
+# Start django server in foreground
 python manage.py runserver
 ```
 
