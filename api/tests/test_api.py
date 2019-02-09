@@ -110,15 +110,6 @@ class APITestCase(TestCase):
         self.assertEqual(response.status_code, 201)
         self.assertEqual(response.json(), {
             "id": 2,
-            "training_configuration": 1,
-            "failure_message": None,
-            "created_on": alter_tz_format(task.created_on.isoformat()),
-            "started_on": None,
-            "terminated_on": None,
-            "test_loss": None,
-            "test_accuracy": None,
-            "docker_id": None,
-            "status": TrainingTask.CREATED,
         })
 
     def get_memory_training_task(self):
