@@ -14,8 +14,8 @@ class TrainingConfigurationSerializer(serializers.ModelSerializer):
             'id', 'algorithm', 'dockerfile', 'created_on',
         )
 
-    algorithm = SlugField(label='name')
-    dockerfile = SlugField(label='name')
+    algorithm = SlugField(label='name', required=False)
+    dockerfile = SlugField(label='name', required=False)
 
 
 class TrainingTaskSerializer(serializers.ModelSerializer):

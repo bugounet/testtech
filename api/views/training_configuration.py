@@ -1,15 +1,20 @@
+from uuid import uuid4
+
+from django.utils.translation import ugettext_lazy as _
 from rest_framework import status
 from rest_framework.generics import GenericAPIView
-from rest_framework.mixins import ListModelMixin, RetrieveModelMixin
+from rest_framework.mixins import (
+    ListModelMixin,
+    RetrieveModelMixin,
+    CreateModelMixin
+)
+from rest_framework.parsers import FileUploadParser
 from rest_framework.response import Response
 
 from api.actions import TrainingConfigurationActionManager
-from api.models import (
-    TrainingConfiguration,
-)
-from api.serializers import (
-    TrainingConfigurationSerializer,
-)
+from api.exceptions import IncompleteConfiguration
+from api.models import TrainingConfiguration
+from api.serializers import TrainingConfigurationSerializer
 
 
 class GenericTrainingView(GenericAPIView):
@@ -17,10 +22,14 @@ class GenericTrainingView(GenericAPIView):
     queryset = TrainingConfiguration.objects.all()
 
 
-class TrainingConfigurationListView(ListModelMixin, GenericTrainingView):
+class TrainingConfigurationListView(CreateModelMixin, ListModelMixin,
+                                    GenericTrainingView):
 
     def get(self, request, *args, **kwargs):
         return self.list(request, *args, **kwargs)
+
+    def post(self, request, *args, **kwargs):
+        return self.create(request, *args, **kwargs)
 
 
 class TrainingConfigurationDetailView(RetrieveModelMixin, GenericTrainingView):
@@ -36,7 +45,13 @@ class TrainingConfigurationRunActionView(GenericTrainingView):
         """
         training_configuration = self.get_object()
         actions = TrainingConfigurationActionManager(training_configuration)
-        task = actions.run_training()
+        try:
+            task = actions.run_training()
+        except IncompleteConfiguration as e:
+            return Response(
+                {'error': str(e)},
+                status=status.HTTP_400_BAD_REQUEST
+            )
         return Response(
             {'id': task.id},
             status=status.HTTP_201_CREATED

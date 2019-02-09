@@ -5,3 +5,7 @@ class AbortNotPossible(RuntimeError):
 
 class AbortFailed(RuntimeError):
     pass
+
+class IncompleteConfiguration(object):
+    pass
+

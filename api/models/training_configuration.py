@@ -22,11 +22,17 @@ class TrainingConfiguration(models.Model):
     algorithm = models.FileField(
         help_text=_("Submitted python algorithm"),
         upload_to=get_algorithm_path,
+        null=True,
+        blank=True,
+        default=None,
     )
 
     dockerfile = models.FileField(
         help_text=_("Submitted dockerfile"),
         upload_to=get_algorithm_path,
+        null=True,
+        blank=True,
+        default=None,
     )
 
     created_on = models.DateTimeField(auto_now_add=True)
