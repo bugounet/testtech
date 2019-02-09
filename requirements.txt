@@ -5,3 +5,4 @@ django-object-actions
 celery
 # Broker to communicate bewteen django & celery
 redis
+docker
