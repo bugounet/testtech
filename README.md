@@ -96,13 +96,15 @@ brew install redis
 ```
 
 Créer le volume de sortie des donnés de docker
-```docker volume create training_output
 ```
+docker volume create training_output
+```
+
 Lancer le serveur:
 ```
 source env/bin/activate
-# Start celery worker in background
-celery -A test_owkin -l info &
+# Start celery worker & beeat in background
+celery -A test_owkin -l info & celery -A test_owkin beat &
 # Start django server in foreground
 python manage.py runserver
 ```
