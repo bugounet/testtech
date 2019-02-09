@@ -30,6 +30,7 @@ class UpdateTaskStateAction(SubActionManager):
         try:
             container = docker_client.containers.get(self.model.docker_id)
         except:
+
             logger.info("Docker looks offline. Retry later.")
             return
 
@@ -50,7 +51,7 @@ class UpdateTaskStateAction(SubActionManager):
             output = self.actions.get_results_output()
         except Exception as e:
             self.actions.mark_failed(
-                "Could not find self.model.results: {}".format(str(e))
+                "Could not find task_results: {}".format(str(e))
             )
             return
 
@@ -62,7 +63,8 @@ class UpdateTaskStateAction(SubActionManager):
             )
         except Exception as e:
             self.actions.mark_failed(
-                "Could not parse self.model.results: {}".format(str(e))
+                "Could not parse task_results: {}".format(str(e))
             )
             return
 
+        docker_client.containers.prune()

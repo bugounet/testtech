@@ -90,9 +90,9 @@ class TrainingTaskActionManager(BaseActionManager):
         working_dir = self.get_working_dir()
         if working_dir is None:
             return None
-        return os.sep.join(working_dir, "results-{}".format(self.model.id))
+        return working_dir
 
     def get_results_output(self):
         dir = self.get_results_output_dir()
-        with open(os.sep.join(dir, 'score.json'), 'r') as f:
+        with open(os.path.join(dir, 'score.json'), 'r') as f:
             return json.loads(f.read())

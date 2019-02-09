@@ -1,7 +1,9 @@
+from logging import getLogger
+
 import docker
 
 from .base import SubActionManager
-
+logger = getLogger(__name__)
 
 class BuildTaskAction(SubActionManager):
     def __init__(self, actions):
@@ -18,6 +20,12 @@ class BuildTaskAction(SubActionManager):
         dockerfile_name = self.actions.get_dockerfile_name()
 
         try:
+            logger.info(
+                'Calling docker: %s %s %s',
+                self.actions.get_image_tag(),
+                working_dir,
+                dockerfile_name
+            )
             image, _ = docker_client.images.build(
                 tag=self.actions.get_image_tag(),
                 path=working_dir,
