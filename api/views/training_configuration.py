@@ -9,7 +9,6 @@ from api.models import (
 )
 from api.serializers import (
     TrainingConfigurationSerializer,
-    TrainingTaskSerializer
 )
 
 
@@ -39,6 +38,6 @@ class TrainingConfigurationRunActionView(GenericTrainingView):
         actions = TrainingConfigurationActionManager(training_configuration)
         task = actions.run_training()
         return Response(
-            TrainingTaskSerializer(task).data,
+            {'id': task.id},
             status=status.HTTP_201_CREATED
         )

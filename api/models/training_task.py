@@ -6,7 +6,15 @@ from django.db import models
 from django.utils.translation import ugettext_lazy as _
 
 
+class TrainingTaskQuerySet(models.QuerySet):
+    def training(self, **kwargs):
+        kwargs.pop('status', None)
+        return self.filter(status=TrainingTask.TRAINING, **kwargs)
+
+
 class TrainingTask(models.Model):
+    objects = TrainingTaskQuerySet.as_manager()
+
     CREATED = "created"
     BUILDING = "building"
     TRAINING = "training"
@@ -87,7 +95,7 @@ class TrainingTask(models.Model):
 
         if self.started_on is None:
             raise ValidationError({
-                'terminated_on':_(
+                'terminated_on': _(
                     'Cannot set end-date without a start date.')
             })
 
