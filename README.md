@@ -133,3 +133,14 @@ GET /v1/task/:task_id
 
 Annuler une task
 POST /v1/task/:task_id/abort
+
+## La suite du plan
+Le projet rendu est cpable de recevoir des fichiers de config pour faire 
+fonctionner les algos en arrière plan. Ce n'est pas super safe car tout le 
+monde peut y accéder. J'aurais donc attaqué la suite du projet en mettant en 
+place un système d'authentification basé sur les Users django.
+
+L'API proposée n'est pas super pertinente car j'ignorais quelles informations
+ on peut vouloir stocker sur les différents algos et leurs tasks. Il n'est 
+ pas non plus ici question de sqavoir se connecter à une autre instance 
+ docker que localhost ce qui limite énormément la performance du système. 
