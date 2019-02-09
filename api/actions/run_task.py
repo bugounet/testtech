@@ -1,9 +1,10 @@
 import docker
 
+from .base import SubActionManager
 from api.models import TrainingTask
 
 
-class RunTaskAction(object):
+class RunTaskAction(SubActionManager):
     def __init__(self, actions):
         self.actions = actions
         self.model = actions.model

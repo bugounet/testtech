@@ -1,10 +1,11 @@
 import docker
 
+from .base import SubActionManager
 from api.exceptions import AbortFailed, AbortNotPossible
 from api.models import TrainingTask
 
 
-class AbortTaskAction(object):
+class AbortTaskAction(SubActionManager):
     def __init__(self, actions):
         self.actions = actions
         self.model = actions.model

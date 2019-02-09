@@ -2,11 +2,13 @@ from logging import getLogger
 
 import docker
 
+from .base import SubActionManager
 from api.models import TrainingTask
 
 logger = getLogger(__name__)
 
-class UpdateTaskStateAction(object):
+
+class UpdateTaskStateAction(SubActionManager):
     def __init__(self, actions):
         self.actions = actions
         self.model = actions.model

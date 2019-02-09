@@ -18,7 +18,7 @@ class TrainingTaskActionManager(BaseActionManager):
     """
 
     def __init__(self, model):
-        super(BaseActionManager, self).__init__(model)
+        super(TrainingTaskActionManager, self).__init__(model)
         self.configuration = model.training_configuration
 
     def mark_building(self):
@@ -50,17 +50,17 @@ class TrainingTaskActionManager(BaseActionManager):
             ]
         )
 
-    def build(self, docker_client):
-        return BuildTaskAction(self).run()
+    def build(self, docker_client=None):
+        return BuildTaskAction(self).run(docker_client)
 
     def run(self, docker_client, docker_image):
-        return RunTaskAction(self).run()
+        return RunTaskAction(self).run(docker_client, docker_image)
 
     def abort(self):
         return AbortTaskAction(self).run()
 
-    def update_state(self, docker_client):
-        return UpdateTaskStateAction(self).run()
+    def update_state(self, docker_client=None):
+        return UpdateTaskStateAction(self).run(docker_client)
 
     def get_working_dir(self):
         if not self.configuration.dockerfile:

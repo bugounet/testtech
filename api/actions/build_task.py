@@ -1,7 +1,9 @@
 import docker
 
+from .base import SubActionManager
 
-class BuildTaskAction(object):
+
+class BuildTaskAction(SubActionManager):
     def __init__(self, actions):
         self.actions = actions
         self.model = actions.model
