@@ -28,19 +28,6 @@ tard si le temps me le permet:
 
 # Lancé d'images
 
-- Créer un volume pour stocker les données de sortie
-```bash
-docker volume create training_output
-```
-- Construire l'image à partir du docker-file
-```bash
-docker build -t image_<running_task_hash_or_id> -f Dockerfile.dms .
-```
-- Exécuter le programme
-```bash
-docker run -d -ti --name=container_<running_task_hash_or_id_as_container_name> image_<running_task_hash_or_id> "-V training_output"
-```
-
 __Note:__
 J'ai testé l'image générée et je recois une tracback assez étrange parfois:
 ```Exception ignored in: <bound method BaseSession.__del__ of <tensorflow.python.client.session.Session object at 0x7fda98b1ae80>>
@@ -54,8 +41,11 @@ il s'agit d'un soucis quand on utilise keras et tensorflow. Ça ne m'empêche
 à priori pas de récupérer les données donc je le laisse faire.
 
 - Récupérer les données de sortie
+Les données de sortie sont stockées dans le MEDIA path lié à la configuration
+Chaque task écrase le run précédent. Ca peut être intéressant de modifier le 
+chemin de sortie en fonction des tasks choise que je n'ai pas faite. :/
 
-## API
+## Prototype de l'API
 D'après les quelques tests effectués via le shell et docker, j'aurai besoin
 de stocker en BDD les Id de run et par conséquent les différents IDs docker.
 J'ai donc en principe deux modèles:
@@ -87,6 +77,7 @@ Créer un virtual env, installer les requirements, et lancer les tests:
 ```
 virtualenv -p python3 env
 source env/bin/activate
+pip install -r requirements.txt
 python manage.py test
 ```
 
@@ -95,16 +86,11 @@ Installer redis pour permettre à celery de fonctionner
 brew install redis
 ```
 
-Créer le volume de sortie des donnés de docker
-```
-docker volume create training_output
-```
-
 Lancer le serveur:
 ```
 source env/bin/activate
 # Start celery worker & beeat in background
-celery -A test_owkin -l info & celery -A test_owkin beat &
+celery -A test_owkin worker -l info & celery -A test_owkin beat &
 # Start django server in foreground
 python manage.py runserver
 ```
@@ -143,4 +129,4 @@ place un système d'authentification basé sur les Users django.
 L'API proposée n'est pas super pertinente car j'ignorais quelles informations
  on peut vouloir stocker sur les différents algos et leurs tasks. Il n'est 
  pas non plus ici question de sqavoir se connecter à une autre instance 
- docker que localhost ce qui limite énormément la performance du système. 
+ docker que localhost ce qui limite énormément la performance du système.
