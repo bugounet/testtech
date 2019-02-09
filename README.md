@@ -19,11 +19,11 @@ Pour simplifier le sujet, je vais commencer par implémenter une API
 qui déclenche un apprentisssage.
 Je laisse donc de côté les notions suivantes que j'envisage de traiter plus
 tard si le temps me le permet:
+ - config de production (le serveur devra être lancé en debug)
  - choix d'une BDD (je vais utiliser un SQLITE pour commencer)
  - authentification (pour un premier pas, je laisse l'API sans auth)
  - soumission d'un algo python (je stocke le fichier python dans les MEDIA et
   les uploaderai avec django-admin)
- - Gestion du cycle de vie de la task (abort, retry, etc...)
  - soumission d'un docker file (pareil que pour l'algo)
 
 # Lancé d'images
