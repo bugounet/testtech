@@ -113,3 +113,23 @@ Se connecter à django-admin:
 
 La base de données SQLite fournie par défaut contient un user qui s'appelle
 "admin". Son mot de passe est "owkin".
+
+## Utilisation:
+
+Créer un algorithme:
+POST /api/trainings
+
+Publier un fichier python
+curl -X PUT "http://localhost:8000/api/training/:id/upload" -F "file=@algo.py" -H "Content-Disposition:attachment; filename=algo.py"
+
+Publier un dockerfile:
+curl -X PUT "http://localhost:8000/api/training/:id/upload" -F "file=@Dockerfile.dms" -H "Content-Disposition:attachment; filename=Dockerfile.dms"
+
+Programmer l'exécution de l'algo
+POST /v1/training/:id/run
+
+Suivre l'avancée de la task
+GET /v1/task/:task_id
+
+Annuler une task
+POST /v1/task/:task_id/abort
